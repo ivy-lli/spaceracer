@@ -6,6 +6,7 @@ import { Controller } from './control';
 export class Scene extends Phaser.Scene
 {
     private rocks : Phaser.Physics.Arcade.Group;
+    private ship : Ship;
 
     constructor() {
         super({
@@ -33,8 +34,8 @@ export class Scene extends Phaser.Scene
       
     create() {
         let background = new Background(this);
-        let ship = new Ship(this);
-        let controller = new Controller(this, ship);
+        this.ship = new Ship(this);
+        let controller = new Controller(this, this.ship);
 
         this.rocks = this.physics.add.group();
         this.createRock();
@@ -42,6 +43,8 @@ export class Scene extends Phaser.Scene
         this.createRock();
         this.createRock();
         this.createRock();
+
+        this.physics.add.collider(this.ship.player, this.rocks, this.hitRock, null, this);
     }
     
     update() {
@@ -62,6 +65,13 @@ export class Scene extends Phaser.Scene
         var rock : Phaser.Physics.Arcade.Sprite = this.rocks.create(x, 16, 'rock-' + rockImg);
         rock.setScale(rockScale / 100);
         rock.setVelocity(Phaser.Math.Between(-100, 100), Phaser.Math.Between(80, 150));
+    }
+
+    hitRock() {
+        this.physics.pause();
+        this.ship.player.setTint(0xff0000);
+        this.ship.player.anims.play('normal');
+        //this.gameOver = true;
     }
 
 }

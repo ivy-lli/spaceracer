@@ -1,6 +1,6 @@
 export class Ship extends Phaser.GameObjects.Container
 {
-    private player : Phaser.Physics.Arcade.Sprite;
+    public readonly player : Phaser.Physics.Arcade.Sprite;
     private rocketSound : Phaser.Sound.BaseSound;
 
     constructor(scene : Phaser.Scene)
